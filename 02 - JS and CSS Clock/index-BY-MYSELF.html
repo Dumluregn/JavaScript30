@@ -98,11 +98,11 @@
           secondsHand.style.transform = `rotate(${SECONDSDEGREE}deg)`;
           
           const MINUTES = NOW.getMinutes();
-          const MINUTESDEGREE = (MINUTES / 60) * 360 + 90;
+          const MINUTESDEGREE = (MINUTES / 60) * 360 + (SECONDS / 60) * 6 + 90;
           minutesHand.style.transform = `rotate(${MINUTESDEGREE}deg)`;      
           
           const HOURS = NOW.getHours();
-          const HOURSDEGREE = (HOURS / 12) * 360 + 90;
+          const HOURSDEGREE = (HOURS / 12) * 360 + (MINUTES / 60) * 30 + 90;
           hoursHand.style.transform = `rotate(${HOURSDEGREE}deg)`;
           console.log(NOW);
       }
