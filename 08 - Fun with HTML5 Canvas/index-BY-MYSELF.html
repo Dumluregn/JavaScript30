@@ -7,8 +7,52 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
-</script>
+  const CANVAS = document.querySelector("#draw");
+  const CTX = CANVAS.getContext("2d");
 
+  CANVAS.width = window.innerWidth;
+  CANVAS.height = window.innerHeight;
+  CTX.lineJoin = "round";
+  CTX.lineCap = "round";
+  CTX.lineWidth = 50;
+  CTX.strokeStyle = "#BADA55";
+  
+
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+
+  function draw(e){
+    if (!isDrawing) {
+      return;
+    }
+    CTX.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    console.log(hue);
+    CTX.beginPath();
+    CTX.moveTo(lastX, lastY);
+    CTX.lineTo(e.offsetX, e.offsetY);
+    CTX.stroke();
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    hue+=3;
+    if (CTX.lineWidth >= 50 || CTX.lineWidth <= 1){
+      direction = !direction;
+    }
+    direction ? CTX.lineWidth++ : CTX.lineWidth--;
+  }
+
+  CANVAS.addEventListener("mousedown", (e) => {
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    isDrawing = true;
+  });
+
+  CANVAS.addEventListener("mousemove", draw);
+  CANVAS.addEventListener("mouseup", () => isDrawing = false);
+  CANVAS.addEventListener("mouseout", () => isDrawing = false);
+
+</script>
 <style>
   html, body {
     margin: 0;
