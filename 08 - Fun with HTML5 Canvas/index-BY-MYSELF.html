@@ -1,63 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-  const CANVAS = document.querySelector("#draw");
-  const CTX = CANVAS.getContext("2d");
+  <head>
+    <meta charset="UTF-8">
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    
+    <div>
+      <button id="mode">Paint rainbow!</button>
+      <span class="color-picker">
+        <label for="color">Or pick a color:</label>
+        <input id="color" type="color" name="color" value="#00BBFF">
+      </span>
+    </div> 
+    
+    <script>
+      const CANVAS = document.querySelector("#draw");
+      const CTX = CANVAS.getContext("2d");
+      const BUTTON = document.querySelector("#mode");
+      const COLOR = document.querySelector("#color");
 
-  CANVAS.width = window.innerWidth;
-  CANVAS.height = window.innerHeight;
-  CTX.lineJoin = "round";
-  CTX.lineCap = "round";
-  CTX.lineWidth = 50;
-  CTX.strokeStyle = "#BADA55";
-  
+      CANVAS.width = window.innerWidth;
+      CANVAS.height = window.innerHeight - 100;
+      CTX.lineJoin = "round";
+      CTX.lineCap = "round";
+      CTX.lineWidth = 50;
+      CTX.strokeStyle = "#BADA55";
 
-  let isDrawing = false;
-  let lastX = 0;
-  let lastY = 0;
-  let hue = 0;
-  let direction = true;
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let hue = 0;
+      let direction = true;
+      let rainbowMode = false;
 
-  function draw(e){
-    if (!isDrawing) {
-      return;
-    }
-    CTX.strokeStyle = `hsl(${hue}, 100%, 50%)`;
-    console.log(hue);
-    CTX.beginPath();
-    CTX.moveTo(lastX, lastY);
-    CTX.lineTo(e.offsetX, e.offsetY);
-    CTX.stroke();
+      function draw(e){
+        if (!isDrawing) {
+          return;
+        }
+        if (rainbowMode){
+          CTX.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+          hue += 3;
+        } else {
+          CTX.strokeStyle = COLOR.value;
+        }
 
-    [lastX, lastY] = [e.offsetX, e.offsetY];
-    hue+=3;
-    if (CTX.lineWidth >= 50 || CTX.lineWidth <= 1){
-      direction = !direction;
-    }
-    direction ? CTX.lineWidth++ : CTX.lineWidth--;
-  }
+        CTX.beginPath();
+        CTX.moveTo(lastX, lastY);
+        CTX.lineTo(e.offsetX, e.offsetY);
+        CTX.stroke();
 
-  CANVAS.addEventListener("mousedown", (e) => {
-    [lastX, lastY] = [e.offsetX, e.offsetY];
-    isDrawing = true;
-  });
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        if (CTX.lineWidth >= 50 || CTX.lineWidth <= 1){
+          direction = !direction;
+        }
+        direction ? CTX.lineWidth++ : CTX.lineWidth--;
+      }
 
-  CANVAS.addEventListener("mousemove", draw);
-  CANVAS.addEventListener("mouseup", () => isDrawing = false);
-  CANVAS.addEventListener("mouseout", () => isDrawing = false);
+      CANVAS.addEventListener("mousedown", (e) => {
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        isDrawing = true;
+      });
 
-</script>
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      CANVAS.addEventListener("mousemove", draw);
+      CANVAS.addEventListener("mouseup", () => isDrawing = false);
+      CANVAS.addEventListener("mouseout", () => isDrawing = false);
+      BUTTON.addEventListener("click", () => rainbowMode = true);
+      COLOR.addEventListener("click", () => rainbowMode = false);
 
-</body>
+    </script>
+    <style>
+      html, body {
+        margin: 0;
+      }
+
+      canvas {
+        border-bottom: 2px solid black;
+      }
+
+      div {
+        width: 500px;
+        margin: auto;
+      }
+
+      button {
+        float: left;
+        font: 400 1.5rem Helvetica;
+        color: white;
+        background-color: #00BBFF;
+        border: 2px solid #00BBFF;
+        border-radius: 0.5rem;
+        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+      }
+
+      button:hover {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+
+      .color-picker {
+        float: right;
+        padding: 5px 0;
+        font: 400 1.5rem Helvetica;
+      }
+
+      input {
+        width: 100px;
+        border-radius: 0.5rem;
+        background-color: white;
+      }
+
+    </style>
+
+  </body>
 </html>
