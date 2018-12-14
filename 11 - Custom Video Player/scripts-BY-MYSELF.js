@@ -6,6 +6,7 @@ const TOGGLE = PLAYER.querySelector(".toggle");
 const SKIPBUTTONS = PLAYER.querySelectorAll("[data-skip]");
 const RANGES = PLAYER.querySelectorAll(".player__slider");
 const FULLSCREENBUTTON = PLAYER.querySelector(".fullscreen");
+const PLAYBACKRATE = PLAYER.querySelector(".current-playback-rate");
 
 PROGRESSBAR.style.flexBasis = "0%";
 let mouseDown = false;
@@ -27,6 +28,9 @@ function skip(){
 
 function handleRangeUpdate(){
     VIDEO[this.name] = this.value;
+    if (this.name === "playbackRate") {
+        PLAYBACKRATE.innerHTML = "x" + this.value;
+    }
 }
 
 function handleProgress(){
@@ -42,7 +46,6 @@ function toggleFullScreen(){
     if (fullScreen){
         PLAYER.style.maxWidth = defaultWidth;
         PLAYER.style.width = defaultWidth;
-
     } else {
         PLAYER.style.maxWidth = window.outerWidth + "px";
         PLAYER.style.width = window.outerWidth + "px";
