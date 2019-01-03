@@ -9,14 +9,30 @@
   <script>
     // start with strings, numbers and booleans
 
+    // let age = 100;
+    // let age2 = age;
+    // console.log(age, age2);
+    // age = 200;
+    // console.log(age, age2);
+    
+    // let name = "Darek";
+    // let name2 = name;
+    // console.log(name, name2);
+    // name = "Wes";
+    // console.log(name, name2);
+
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
+    const team = players;
+    // console.log(players, team);
 
     // You might think we can just do something like this:
+    // team[3] = "Lux";
 
     // however what happens when we update that array?
+    // console.log(players, team);
 
     // now here is the problem!
 
@@ -27,10 +43,23 @@
     // So, how do we fix this? We take a copy instead!
 
     // one way
+    const team2 = players.slice();
+    team2[3] = "dar";
+    console.log(team2, players);
 
     // or create a new array and concat the old one in
+    const team3 = [].concat(players);
+    team3[3] = "jar";
+    console.log(team3, players);
 
     // or use the new ES6 Spread
+    const team4 = [...players];
+    team4[3] = "bar";
+    console.log(team4, players);
+
+    const team5 = Array.from(players);
+    team5[3] = "mar";
+    console.log(team5, players);
 
     // now when we update it, the original one isn't changed
 
@@ -44,11 +73,35 @@
 
     // and think we make a copy:
 
+    // const captain = person;
+    // person.number = 99;
+    // console.log (person);
+
     // how do we take a copy instead?
+    const cap2 = Object.assign({}, person, { number: 99, age: 12 });
+    console.log (cap2, person);
 
     // We will hopefully soon see the object ...spread
+    // const cap3 = {...};
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    const wes = {
+      name: "Wes",
+      age: 100,
+      social: {
+        twitter: "@wesbos",
+        facebook: "wesbos.developer"
+      }
+    }
+
+    // const pers = Object.assign({}, wes);
+    // pers.social.twitter = "@coolman";
+    // console.log(wes, pers);
+
+    const dev = Object.assign({}, wes);
+    const dev2 = JSON.parse(JSON.stringify(dev));
+    dev2.social.twitter = "@cool";
+    console.log(dev, dev2);
 
   </script>
 
